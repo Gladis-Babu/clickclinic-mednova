@@ -1,0 +1,102 @@
+import { useLang, type Lang } from "./i18n";
+
+const en = {
+  c1: "Prediabetes classification", c2: "Diabetes referral", c3: "Reviewer escalation", c4: "Same-patient proof case", c5: "Invalid input handling", c6: "AI-vs-rule trace", c7: "Timing separation", c8: "Bilingual integrity", c9: "Next-step routing", c10: "Privacy and data integrity", c11: "Patient safety", vPassing: "TESTS PASSING", vActual: "Actual",
+  navVerify: "Engine test",
+  noHistory: "No prior history",
+  histMissingT: "Check screening history",
+  histMissingD: "No prior screening history on file. Same value as a routine case, but it cannot be compared to a baseline — flagged for human review (RULE-003).",
+  histOkD: "Prior screening history found and compared.",
+  vEyebrow: "Engine test", vTitle: "Exact test assertions",
+  vLead: "Every rule the engine follows is written as a test, checked live on this page against the real engine.",
+  vRun: "Run all tests", vPass: "Pass", vFail: "Fail", vPending: "Not run", vSummary: "{pass} of {total} passed",
+  vInput: "Input", vExpect: "Expected",
+  a1: "HbA1c below 5.7% is normal", a2: "HbA1c exactly 5.7% enters prediabetes (boundary)", a3: "HbA1c 6.5% or more is referred",
+  a4: "Fasting glucose 5.6 mmol/L enters prediabetes", a5: "Fasting glucose 7.0 mmol/L or more is referred",
+  a6: "OGTT 7.8 mmol/L enters prediabetes", a7: "OGTT 11.1 mmol/L or more is referred",
+  a8: "Same value with prior history: no review needed", a9: "Same value without prior history: sent for review",
+  a10: "Impossible values are rejected, not scored", a11: "Same input always gives the same output",
+  a12: "Prediabetes follow-up is at 3, 6 and 12 months", a13: "Reminders on day 3 and 7, escalation on day 14",
+  a14: "Medication never changes the result band",
+  vFooter: "Synthetic data only — not a diagnosis. Thresholds per UAE DoH DOH/ST/SDMDMT/V1/2024. In deployment, inputs would arrive from Malaffi, Nabidh and Riayati — the UAE's health information exchanges.",
+};
+type V = typeof en;
+
+const ar: V = {
+  c1: "تصنيف ما قبل السكري", c2: "إحالة السكري", c3: "التصعيد للمراجع", c4: "حالة إثبات المريض نفسه", c5: "معالجة المدخلات غير الصالحة", c6: "تتبع الذكاء الاصطناعي مقابل القاعدة", c7: "فصل التوقيت", c8: "سلامة اللغتين", c9:"توجيه الخطوة التالية", c10:"الخصوصية وسلامة البيانات", c11: "سلامة المريض", vPassing: "اختبارات ناجحة", vActual: "الفعلي",
+  navVerify: "اختبار المحرك", noHistory: "لا يوجد سجل سابق",
+  histMissingT: "فحص سجل الفحوصات", histMissingD: "لا يوجد سجل فحص سابق. القيمة نفسها لحالة روتينية، لكن لا يمكن مقارنتها بخط أساس — أُحيلت لمراجعة بشرية (RULE-003).",
+  histOkD: "تم العثور على سجل فحص سابق ومقارنته.",
+  vEyebrow: "اختبار المحرك", vTitle: "اختبارات التحقق الدقيقة", vLead: "كل قاعدة يتبعها المحرك مكتوبة كاختبار، ويُتحقق منها مباشرة على هذه الصفحة أمام المحرك الفعلي.",
+  vRun: "تشغيل كل الاختبارات", vPass: "ناجح", vFail: "فاشل", vPending: "لم يُشغَّل", vSummary: "نجح {pass} من {total}", vInput: "المدخل", vExpect: "المتوقع",
+  a1: "HbA1c أقل من 5.7% طبيعي", a2: "HbA1c عند 5.7% بالضبط يدخل مرحلة ما قبل السكري (حد)", a3: "HbA1c بنسبة 6.5% أو أكثر يُحال",
+  a4: "سكر الصيام 5.6 ملمول/لتر يدخل مرحلة ما قبل السكري", a5: "سكر الصيام 7.0 ملمول/لتر أو أكثر يُحال",
+  a6: "OGTT عند 7.8 ملمول/لتر يدخل مرحلة ما قبل السكري", a7: "OGTT عند 11.1 ملمول/لتر أو أكثر يُحال",
+  a8: "القيمة نفسها مع سجل سابق: لا حاجة لمراجعة", a9: "القيمة نفسها دون سجل سابق: تُرسل للمراجعة",
+  a10: "القيم المستحيلة تُرفض ولا تُقيَّم", a11: "المدخل نفسه يعطي دائماً النتيجة نفسها",
+  a12: "متابعة ما قبل السكري بعد 3 و6 و12 شهراً", a13: "تذكيرات في اليوم 3 و7، وتصعيد في اليوم 14", a14: "الدواء لا يغيّر فئة النتيجة أبداً",
+  vFooter: "بيانات تجريبية فقط — ليس تشخيصاً. الحدود وفق دائرة الصحة DOH/ST/SDMDMT/V1/2024. في النشر الفعلي تصل المدخلات عبر ملفتي ونبض ورياضتي — منصات تبادل المعلومات الصحية في الإمارات.",
+};
+const hi: V = {
+  c1: "प्रीडायबिटीज़ वर्गीकरण", c2: "डायबिटीज़ रेफ़रल", c3: "समीक्षक एस्केलेशन", c4: "एक ही मरीज़ प्रमाण केस", c5: "अमान्य इनपुट संभालना", c6: "AI बनाम नियम ट्रेस", c7: "समय पृथक्करण", c8: "द्विभाषी अखंडता", c9:"अगले कदम की रूटिंग", c10:"गोपनीयता और डेटा अखंडता", c11: "मरीज़ सुरक्षा", vPassing: "टेस्ट पास", vActual: "वास्तविक",
+  navVerify: "इंजन टेस्ट", noHistory: "पिछला रिकॉर्ड नहीं",
+  histMissingT: "जाँच इतिहास देखें", histMissingD: "पिछली जाँच का कोई रिकॉर्ड नहीं। मान एक सामान्य केस जैसा है, पर आधार से तुलना नहीं हो सकती — मानव समीक्षा के लिए भेजा गया (RULE-003)।",
+  histOkD: "पिछली जाँच का रिकॉर्ड मिला और तुलना की गई।",
+  vEyebrow: "इंजन टेस्ट", vTitle: "सटीक परीक्षण दावे", vLead: "इंजन का हर नियम एक टेस्ट के रूप में लिखा है, जो इस पेज पर असली इंजन के मुकाबले लाइव जाँचा जाता है।",
+  vRun: "सभी टेस्ट चलाएँ", vPass: "पास", vFail: "फ़ेल", vPending: "नहीं चला", vSummary: "{total} में से {pass} पास", vInput: "इनपुट", vExpect: "अपेक्षित",
+  a1: "5.7% से कम HbA1c सामान्य है", a2: "ठीक 5.7% HbA1c प्रीडायबिटीज़ में आता है (सीमा)", a3: "6.5% या अधिक HbA1c रेफ़र होता है",
+  a4: "फ़ास्टिंग ग्लूकोज़ 5.6 mmol/L प्रीडायबिटीज़ में आता है", a5: "फ़ास्टिंग ग्लूकोज़ 7.0 mmol/L या अधिक रेफ़र होता है",
+  a6: "OGTT 7.8 mmol/L प्रीडायबिटीज़ में आता है", a7: "OGTT 11.1 mmol/L या अधिक रेफ़र होता है",
+  a8: "वही मान, पिछले रिकॉर्ड के साथ: समीक्षा ज़रूरी नहीं", a9: "वही मान, बिना पिछले रिकॉर्ड के: समीक्षा के लिए भेजा गया",
+  a10: "असंभव मान अस्वीकार होते हैं", a11: "एक ही इनपुट हमेशा एक ही परिणाम देता है",
+  a12: "प्रीडायबिटीज़ फ़ॉलो-अप 3, 6 और 12 महीने पर", a13: "दिन 3 और 7 पर रिमाइंडर, दिन 14 पर एस्केलेशन", a14: "दवा कभी परिणाम की श्रेणी नहीं बदलती",
+  vFooter: "केवल कृत्रिम डेटा — निदान नहीं। सीमाएँ UAE DoH DOH/ST/SDMDMT/V1/2024 के अनुसार। वास्तविक तैनाती में इनपुट Malaffi, Nabidh और Riayati — यूएई के हेल्थ इन्फॉर्मेशन एक्सचेंज — से आएँगे।",
+};
+const ur: V = {
+  c1: "پری ذیابیطس درجہ بندی", c2: "ذیابیطس ریفرل", c3: "جائزہ کار ایسکلیشن", c4: "ایک ہی مریض ثبوت کیس", c5: "غلط ان پٹ کا انتظام", c6: "AI بمقابلہ اصول ٹریس", c7: "وقت کی علیحدگی", c8: "دو لسانی سالمیت", c9:"اگلے قدم کی راہ", c10:"رازداری اور ڈیٹا سالمیت", c11: "مریض کی حفاظت", vPassing: "ٹیسٹ کامیاب", vActual: "اصل",
+  navVerify: "انجن ٹیسٹ", noHistory: "سابقہ ریکارڈ نہیں",
+  histMissingT: "اسکریننگ ریکارڈ کی جانچ", histMissingD: "سابقہ اسکریننگ کا کوئی ریکارڈ نہیں۔ قدر ایک عام کیس جیسی ہے، مگر بنیاد سے موازنہ ممکن نہیں — انسانی جائزے کے لیے بھیجا گیا (RULE-003)۔",
+  histOkD: "سابقہ اسکریننگ ریکارڈ ملا اور موازنہ کیا گیا۔",
+  vEyebrow: "انجن ٹیسٹ", vTitle: "درست ٹیسٹ دعوے", vLead: "انجن کا ہر اصول ایک ٹیسٹ کے طور پر لکھا گیا ہے، جو اس صفحے پر اصل انجن کے مقابلے میں براہِ راست جانچا جاتا ہے۔",
+  vRun: "تمام ٹیسٹ چلائیں", vPass: "کامیاب", vFail: "ناکام", vPending: "نہیں چلا", vSummary: "{total} میں سے {pass} کامیاب", vInput: "ان پٹ", vExpect: "متوقع",
+  a1: "5.7% سے کم HbA1c نارمل ہے", a2: "بالکل 5.7% HbA1c پری ذیابیطس میں آتا ہے (حد)", a3: "6.5% یا زیادہ HbA1c ریفر ہوتا ہے",
+  a4: "فاسٹنگ گلوکوز 5.6 mmol/L پری ذیابیطس میں آتا ہے", a5: "فاسٹنگ گلوکوز 7.0 mmol/L یا زیادہ ریفر ہوتا ہے",
+  a6: "OGTT 7.8 mmol/L پری ذیابیطس میں آتا ہے", a7: "OGTT 11.1 mmol/L یا زیادہ ریفر ہوتا ہے",
+  a8: "وہی قدر، سابقہ ریکارڈ کے ساتھ: جائزہ ضروری نہیں", a9: "وہی قدر، سابقہ ریکارڈ کے بغیر: جائزے کے لیے بھیجا گیا",
+  a10: "ناممکن قدریں رد کی جاتی ہیں", a11: "ایک ہی ان پٹ ہمیشہ ایک ہی نتیجہ دیتا ہے",
+  a12: "پری ذیابیطس فالو اپ 3، 6 اور 12 ماہ پر", a13: "دن 3 اور 7 پر یاد دہانی، دن 14 پر ایسکلیشن", a14: "دوا کبھی نتیجے کا زمرہ نہیں بدلتی",
+  vFooter: "صرف مصنوعی ڈیٹا — تشخیص نہیں۔ حدود UAE DoH DOH/ST/SDMDMT/V1/2024 کے مطابق۔ حقیقی نفاذ میں ان پٹ Malaffi، Nabidh اور Riayati — امارات کے ہیلتھ انفارمیشن ایکسچینج — سے آئے گا۔",
+};
+const tl: V = {
+  c1: "Klasipikasyon ng prediabetes", c2: "Referral sa diabetes", c3: "Escalation sa reviewer", c4: "Kaso ng parehong pasyente", c5: "Paghawak sa maling input", c6: "Trace ng AI laban sa panuntunan", c7: "Paghihiwalay ng oras", c8: "Integridad ng dalawang wika", c9:"Ruta ng susunod na hakbang", c10:"Privacy at integridad ng data", c11: "Kaligtasan ng pasyente", vPassing: "PASADONG TEST", vActual: "Aktwal",
+  navVerify: "Engine test", noHistory: "Walang naunang record",
+  histMissingT: "Suriin ang kasaysayan ng screening", histMissingD: "Walang naunang screening sa record. Kapareho ng halaga ng karaniwang kaso, pero hindi maikukumpara sa baseline — ipinasa para sa pagsusuri ng tao (RULE-003).",
+  histOkD: "May naunang screening record at naikumpara.",
+  vEyebrow: "Engine test", vTitle: "Eksaktong mga test assertion", vLead: "Bawat panuntunan ng engine ay nakasulat bilang test, at sinusuri nang live sa pahinang ito laban sa totoong engine.",
+  vRun: "Patakbuhin lahat", vPass: "Pasado", vFail: "Bagsak", vPending: "Hindi pa", vSummary: "{pass} sa {total} ang pasado", vInput: "Input", vExpect: "Inaasahan",
+  a1: "Normal ang HbA1c na mas mababa sa 5.7%", a2: "Ang HbA1c na eksaktong 5.7% ay prediabetes (hangganan)", a3: "Ang HbA1c na 6.5% pataas ay nire-refer",
+  a4: "Ang fasting glucose na 5.6 mmol/L ay prediabetes", a5: "Ang fasting glucose na 7.0 mmol/L pataas ay nire-refer",
+  a6: "Ang OGTT na 7.8 mmol/L ay prediabetes", a7: "Ang OGTT na 11.1 mmol/L pataas ay nire-refer",
+  a8: "Parehong halaga, may naunang record: walang review", a9: "Parehong halaga, walang naunang record: ipinasa sa review",
+  a10: "Tinatanggihan ang imposibleng halaga", a11: "Parehong input, laging parehong resulta",
+  a12: "Follow-up sa prediabetes sa 3, 6 at 12 buwan", a13: "Paalala sa araw 3 at 7, escalation sa araw 14", a14: "Hindi binabago ng gamot ang kategorya ng resulta",
+  vFooter: "Sintetikong datos lamang — hindi diyagnosis. Mga threshold ayon sa UAE DoH DOH/ST/SDMDMT/V1/2024. Sa aktwal na deployment, dumarating ang input mula sa Malaffi, Nabidh at Riayati — mga health information exchange ng UAE.",
+};
+const ml: V = {
+  c1: "പ്രീഡയബറ്റിസ് വർഗ്ഗീകരണം", c2: "ഡയബറ്റിസ് റഫറൽ", c3: "റിവ്യൂവർ എസ്കലേഷൻ", c4: "ഒരേ രോഗി തെളിവ് കേസ്", c5: "അസാധു ഇൻപുട്ട് കൈകാര്യം", c6: "AI vs നിയമ ട്രേസ്", c7: "സമയ വേർതിരിവ്", c8: "ദ്വിഭാഷാ സമഗ്രത", c9:"അടുത്ത ഘട്ട റൂട്ടിംഗ്", c10:"സ്വകാര്യതയും ഡാറ്റാ സമഗ്രതയും", c11: "രോഗി സുരക്ഷ", vPassing: "ടെസ്റ്റുകൾ വിജയം", vActual: "യഥാർത്ഥം",
+  navVerify: "എഞ്ചിൻ ടെസ്റ്റ്", noHistory: "മുൻ രേഖയില്ല",
+  histMissingT: "സ്ക്രീനിംഗ് ചരിത്രം പരിശോധിക്കുക", histMissingD: "മുൻ സ്ക്രീനിംഗ് രേഖയില്ല. ഒരു സാധാരണ കേസിന്റെ അതേ മൂല്യം, പക്ഷേ അടിസ്ഥാനവുമായി താരതമ്യം ചെയ്യാനാവില്ല — മനുഷ്യ അവലോകനത്തിന് അയച്ചു (RULE-003).",
+  histOkD: "മുൻ സ്ക്രീനിംഗ് രേഖ കണ്ടെത്തി താരതമ്യം ചെയ്തു.",
+  vEyebrow: "എഞ്ചിൻ ടെസ്റ്റ്", vTitle: "കൃത്യമായ ടെസ്റ്റ് ഉറപ്പുകൾ", vLead: "എഞ്ചിൻ പാലിക്കുന്ന ഓരോ നിയമവും ഒരു ടെസ്റ്റായി എഴുതിയിരിക്കുന്നു, ഈ പേജിൽ യഥാർത്ഥ എഞ്ചിനിൽ തത്സമയം പരിശോധിക്കുന്നു.",
+  vRun: "എല്ലാ ടെസ്റ്റുകളും റൺ ചെയ്യുക", vPass: "വിജയം", vFail: "പരാജയം", vPending: "റൺ ചെയ്തിട്ടില്ല", vSummary: "{total}-ൽ {pass} വിജയിച്ചു", vInput: "ഇൻപുട്ട്", vExpect: "പ്രതീക്ഷിക്കുന്നത്",
+  a1: "5.7%-ൽ താഴെയുള്ള HbA1c സാധാരണമാണ്", a2: "കൃത്യം 5.7% HbA1c പ്രീഡയബറ്റിസിൽ വരുന്നു (പരിധി)", a3: "6.5% അല്ലെങ്കിൽ കൂടുതൽ HbA1c റഫർ ചെയ്യുന്നു",
+  a4: "ഫാസ്റ്റിംഗ് ഗ്ലൂക്കോസ് 5.6 mmol/L പ്രീഡയബറ്റിസിൽ വരുന്നു", a5: "ഫാസ്റ്റിംഗ് ഗ്ലൂക്കോസ് 7.0 mmol/L അല്ലെങ്കിൽ കൂടുതൽ റഫർ ചെയ്യുന്നു",
+  a6: "OGTT 7.8 mmol/L പ്രീഡയബറ്റിസിൽ വരുന്നു", a7: "OGTT 11.1 mmol/L അല്ലെങ്കിൽ കൂടുതൽ റഫർ ചെയ്യുന്നു",
+  a8: "അതേ മൂല്യം, മുൻ രേഖയോടെ: അവലോകനം വേണ്ട", a9: "അതേ മൂല്യം, മുൻ രേഖയില്ലാതെ: അവലോകനത്തിന് അയയ്ക്കുന്നു",
+  a10: "അസാധ്യമായ മൂല്യങ്ങൾ നിരസിക്കുന്നു", a11: "ഒരേ ഇൻപുട്ട് എപ്പോഴും ഒരേ ഫലം നൽകുന്നു",
+  a12: "പ്രീഡയബറ്റിസ് ഫോളോ-അപ്പ് 3, 6, 12 മാസങ്ങളിൽ", a13: "ദിവസം 3, 7-ൽ ഓർമ്മപ്പെടുത്തൽ, ദിവസം 14-ൽ എസ്കലേഷൻ", a14: "മരുന്ന് ഫല വിഭാഗം ഒരിക്കലും മാറ്റില്ല",
+  vFooter: "കൃത്രിമ ഡാറ്റ മാത്രം — രോഗനിർണയമല്ല. പരിധികൾ UAE DoH DOH/ST/SDMDMT/V1/2024 പ്രകാരം. യഥാർത്ഥ വിന്യാസത്തിൽ ഇൻപുട്ടുകൾ Malaffi, Nabidh, Riayati — യുഎഇ ഹെൽത്ത് ഇൻഫർമേഷൻ എക്സ്ചേഞ്ചുകൾ — വഴി എത്തും.",
+};
+
+export const verifyCopy: Record<Lang, V> = { en, ar, hi, ur, tl, ml };
+export const useVerify = () => verifyCopy[useLang().lang];
