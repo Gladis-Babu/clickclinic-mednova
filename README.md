@@ -2,7 +2,7 @@
 
 **Catch prediabetes early. Follow through.**
 
-ClickClinic is a bilingual (English / Arabic, plus Hindi, Urdu, Tagalog and Malayalam) healthcare prototype that closes the gap between a diabetes screening result and a completed clinical follow-up — turning "your result is ready" into a booked, attended, and traceable consultation.
+ClickClinic is a multilingual (English / Arabic, plus Hindi, Urdu, Tagalog and Malayalam) healthcare prototype that closes the gap between a diabetes screening result and a completed clinical follow-up — turning "your result is ready" into a booked, attended, and traceable consultation.
 
 > ⚠️ **Prototype notice** — This is a hackathon/demo build. All patient cases are **synthetic**, no real patient data is stored, and nothing here diagnoses, prescribes, or claims live clinical integration.
 
